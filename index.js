@@ -28,10 +28,10 @@ function matchBox (result) {
     let InnerText;
     if (result) {
         classType = 'won'
-        InnerText = 'Ganaste'
+        InnerText = 'Victory'
     } else {
         classType = 'lost'
-        InnerText = 'Perdiste'
+        InnerText = 'Defeat'
     }
     return `<div class="${classType}">${InnerText}</div>`
 }
