@@ -46,7 +46,7 @@ header{
     padding: 0 1rem;
     width: 10rem;
     font-weight: bold;
-    transition: all 0.5s;
+    transition: all 0.3s;
     outline: none;
 }
 .header-summoner-box input:hover{
@@ -62,75 +62,115 @@ header{
     border-radius: 0.5rem;
     padding: 0 1rem;
     font-weight: bold;
-    transition: all 0.5s;
+    transition: all 0.3s;
 }
 .header-summoner-box button:hover{
     background-color: var(--dark-background);
     border-top: 2px solid transparent;
 }
 
-#match-container {
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-}
+
+
+
+
 .main-body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: auto;
     gap: 4rem;
-    padding: 4rem;
-    gap: 1rem;
-}
-.upper-match-container {
-    border-radius: 0.5rem;
-    width: 50rem;
-    min-height: 25rem;
-    flex-direction: column;
-    background-color: var(--dark-sections);
-    overflow: hidden;
+    padding: 2rem 4rem;
 }
 #match-container {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: var(--dark-sections);
     width: auto;
+    min-height: 25rem;
     display: flex;
     flex-direction: column;
 }
-#match-container div {
-    padding-left: 4rem;
-    border-top: 1px solid var(--dark-background);
-    width: auto;
-    text-align: center;
-    font-weight: bold;
-    height: 4rem;
+.recent-matches-container {
+    border-radius: 0.5rem;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    line-height: 4rem;
+    width: 100%;
+    height: 6rem;
+    background-color: var(--dark-sections);
+    margin-bottom: 2rem;
+    justify-content: space-between;
 }
-.won {
+.average-kda {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 4rem;
+}
+.all-match-info-container {
+    width: 40rem;
+    flex-direction: column;
+    overflow: hidden;
+}
+#match-container .match-card {
+    border-bottom: 1px solid var(--dark-background);
+    width: auto;
+    text-align: center;
+    height: 4rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0rem 4rem;
+}
+.match-card .champion-info, .result-info {
+    display: flex;
+    width: 50%;
+    align-items: center;
+    text-shadow: 0px 2px 2px var(--dark-background);
+    height: 100%;
+}
+.match-card .result-info {
+    color: hsl(32, 55%, 65%);
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+.result-info .result-info-kda {
+    font-size: 0.9rem;
+}
+.match-won .game-result{
     color: hsl(178, 69%, 52%);
-    background-image: linear-gradient(
-        90deg,
-        hsl(225deg 14% 11%) 0%,
-        hsl(225deg 14% 11%) 5%,
-        hsl(198deg 25% 18%) 47%,
-        hsl(189deg 40% 31%) 100%
-      );
 }
-.lost {
+.match-lost .game-result{
     color: hsl(0, 100%, 67%);
-    background-image: linear-gradient(
-        90deg,
-        hsl(225deg 14% 11%) 0%,
-        hsl(225deg 14% 11%) 5%,
-        hsl(354deg 27% 19%) 47%,
-        hsl(0deg 46% 37%) 100%
-      );
+    
 }
+.match-card {
+    background-color: var(--dark-sections);
+    transition: all 0.5s;
+}
+div.match-card:hover {
+    background-color: var(--dark-elements);
+}
+
+
+
+
+
+
+
+
+
+
 .profile-container {
-    width: 20rem;
+    width: 30rem;
     min-height: 25rem;
     background-color: var(--dark-sections);
     border-radius: 0.5rem;
+    transition: all 0.3s;
+}
+div.profile-container:hover {
+    background-color: hsl(189deg 40% 31%);
 }

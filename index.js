@@ -1,4 +1,4 @@
-const API_KEY = 'RGAPI-7a212cce-02c4-44a8-8ade-38130fe79a3e'
+const API_KEY = 'RGAPI-16fa74ca-c565-4842-b428-fc7e6a1913e3'
 
 async function getSummonerData(summoner) {
     const SUMMONER_URL = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}?api_key=${API_KEY}`
@@ -8,7 +8,7 @@ async function getSummonerData(summoner) {
 }
 
 async function getMatchDataList(summonerPuuid) {
-    const MATCH_ID_LIST_URL = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20&api_key=${API_KEY}`
+    const MATCH_ID_LIST_URL = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=10&api_key=${API_KEY}`
     let responseMatchIds = await fetch(MATCH_ID_LIST_URL)
     const matchIdList = await responseMatchIds.json()
     
@@ -23,29 +23,56 @@ async function getMatchDataList(summonerPuuid) {
     return matchList
 }
 
-function matchBox (result) {
+function matchBox (matchArr) {
     let classType;
-    let InnerText;
-    if (result) {
-        classType = 'won'
-        InnerText = 'Victory'
+    let matchResult;
+    let personalKills = matchArr['kills']
+    let personalDeaths = matchArr['deaths']
+    let personalAssists = matchArr['assists']
+    let personalKDA;
+    personalDeaths === 0 ? personalKDA = personalKills + personalAssists : personalKDA = (personalKills + personalAssists) / personalDeaths
+    if (matchArr['win']) {
+        classType = 'match-won'
+        matchResult = 'Victory'
     } else {
-        classType = 'lost'
-        InnerText = 'Defeat'
+        classType = 'match-lost'
+        matchResult = 'Defeat'
     }
-    return `<div class="${classType}">${InnerText}</div>`
+    return `
+    <div class="${classType} match-card">
+    <div class="champion-info">
+        <div class="champion-info-img"></div>
+        <div class="game-result">${matchResult}</div>
+    </div>
+
+    <div class="result-info">
+        <div class="result-info-score">${personalKills} / ${personalDeaths} / ${personalAssists}</div>
+        <div class="result-info-kda">${Math.round(personalKDA * 10) / 10} KDA</div>
+    </div>
+    </div>
+    `
+    
 }
-function winList(MatchDataList, playerID) {
-    let winListArr = MatchDataList.map((match) => {
-        let participants = match.metadata.participants
-        let idPosition = participants.indexOf(playerID, 0)
+function MatchCard(MatchDataList, playerID) {
+    let MatchCardArr = MatchDataList.map((match) => {
+        let MatchInfoObj = {}
+        let idPosition = match.metadata.participants.indexOf(playerID, 0)
+
         if (idPosition > 4) {
-            return match.info.teams[1].win
+            let winBoolean = match.info.teams[1].win
+            MatchInfoObj.win = winBoolean
         } else {
-            return match.info.teams[0].win
+            let winBoolean = match.info.teams[0].win
+            MatchInfoObj.win = winBoolean
         }
+
+        MatchInfoObj.kills = match.info.participants[idPosition]['kills']
+        MatchInfoObj.deaths = match.info.participants[idPosition]['deaths']
+        MatchInfoObj.assists = match.info.participants[idPosition]['assists']
+
+        return MatchInfoObj
     })
-    return winListArr
+    return MatchCardArr
 }
 
 const button = document.getElementById('summoner-button')
@@ -62,11 +89,10 @@ button.onclick = function () {
         summonerPuuid = summonerData.puuid
         
         getMatchDataList(summonerPuuid).then((MatchDataList) => {
-            
-            winList = winList(MatchDataList, summonerPuuid)
+            let MatchCardsList = MatchCard(MatchDataList, summonerPuuid)
 
-            const matchContainerList = winList.map((win) => {
-                return matchBox(win)
+            const matchContainerList = MatchCardsList.map((matchArr) => {
+                return matchBox(matchArr)
             })
             matchesContainer.innerHTML = `
             ${matchContainerList.join("")}
