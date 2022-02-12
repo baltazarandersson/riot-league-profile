@@ -28,7 +28,7 @@ header{
     background-color: var(--dark-sections);
     align-items: center;
 }
-.input-container {
+.header-summoner-box {
     margin-left: 4rem;
     height: auto;
     display: flex;
@@ -36,7 +36,7 @@ header{
     gap: 2rem;
     height: auto;
 }
-.input-container input{
+.header-summoner-box input{
     box-sizing: border-box;
     height: 2rem;
     background-color: var(--dark-elements); 
@@ -49,11 +49,11 @@ header{
     transition: all 0.5s;
     outline: none;
 }
-.input-container input:hover{
+.header-summoner-box input:hover{
     background-color: var(--dark-background);
     border-top: 2px solid transparent;
 }
-.input-container button{
+.header-summoner-box button{
     box-sizing: border-box;
     height: auto;
     border: none;
@@ -64,7 +64,7 @@ header{
     font-weight: bold;
     transition: all 0.5s;
 }
-.input-container button:hover{
+.header-summoner-box button:hover{
     background-color: var(--dark-background);
     border-top: 2px solid transparent;
 }
@@ -74,18 +74,19 @@ header{
     flex-direction: column;
     width: 20%;
 }
-.main-content {
+.main-body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: auto;
     gap: 4rem;
-    margin: 4rem;
+    padding: 4rem;
     gap: 1rem;
 }
-.main-match-container {
+.upper-match-container {
     border-radius: 0.5rem;
     width: 50rem;
+    min-height: 25rem;
     flex-direction: column;
     background-color: var(--dark-sections);
     overflow: hidden;
@@ -127,9 +128,9 @@ header{
         hsl(0deg 46% 37%) 100%
       );
 }
-.other-container {
+.profile-container {
     width: 20rem;
-    min-height: 30rem;
+    min-height: 25rem;
     background-color: var(--dark-sections);
     border-radius: 0.5rem;
 }
