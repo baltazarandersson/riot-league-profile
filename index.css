@@ -103,12 +103,18 @@ header{
     gap: 4rem;
     padding: 2rem 4rem;
 }
+.all-match-info-container {
+    width: 40rem;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 30rem;
+}
 #match-container {
     border-radius: 0.5rem;
     overflow: hidden;
     background-color: var(--dark-sections);
     width: auto;
-    min-height: 25rem;
+    min-height: 23rem;
     display: flex;
     flex-direction: column;
 }
@@ -171,20 +177,18 @@ header{
 }
 .bar-wins {
     background-color: hsl(178, 69%, 52%);
+    border-right: 1px solid var(--dark-sections);
 }
 .bar-remakes {
     background-color: var(--font-dimmed);
 }
 .bar-losses {
+    border-left: 1px solid var(--dark-sections);
     background-color: hsl(0, 100%, 67%);
 }
 
 
-.all-match-info-container {
-    width: 40rem;
-    flex-direction: column;
-    overflow: hidden;
-}
+
 #match-container .match-card {
     border-bottom: 1px solid var(--dark-background);
     width: auto;
@@ -214,6 +218,7 @@ header{
     background-size: 115%;
     background-position: center;
     border-radius: 0.2rem;
+    background-repeat: no-repeat;
 }
 .match-card .result-info {
     color: hsl(32, 55%, 65%);
@@ -262,13 +267,104 @@ div.match-card:hover {
 
 
 
-.profile-container {
+#profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     width: 30rem;
-    min-height: 25rem;
+    max-height: 30rem;
     background-color: var(--dark-sections);
     border-radius: 0.5rem;
     transition: all 0.3s;
+    padding: 1rem 1rem;
+    box-sizing: border-box;
 }
-div.profile-container:hover {
-    background-color: hsl(189deg 40% 31%);
+.profile-champion-cover {
+    width: 100%;
+    min-height: 12rem;
+    background-size: 100% 140%;
+    background-repeat: no-repeat;
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
+}
+.profile-container-info {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 1rem 3rem;
+    width: 100%;
+    min-height: 16rem;
+}
+.profile-logo-summoner {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 3rem;
+}
+.profile-icon-container {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+.profile-icon {
+    position: relative;
+    bottom: -0.5rem;
+    width: 8rem;
+    height: 8rem;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    border: 0.5rem solid var(--dark-sections);
+    box-sizing: border-box;
+}
+.profile-summoner-nickname {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: space-between;
+    align-items: center;
+}
+.profile-summoner-nickname .nickname {
+    text-shadow: 0px 2px 2px var(--dark-background);
+    font-size: 1.5rem;
+}
+.profile-summoner-nickname .level {
+    font-size: 0.9rem;
+    color: var(--font-dimmed);
+}
+.profile-container-elo {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    height: 11rem;
+}
+.elo-img {
+    width: 50%;
+    min-height: 5rem;
+}
+.elo-img .img {
+    width: 8rem;
+    height: 8rem;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.elo-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    min-height: 8rem;
+    gap: 1rem;
+}
+.elo-text {
+    text-shadow: 0px 2px 2px var(--dark-background);
+    font-size: 1.5rem;
+}
+.elo-games {
+    font-size: 0.9;
+    color: var(--font-dimmed);
 }

@@ -1,5 +1,5 @@
-const API_KEY = 'RGAPI-8ba30b91-c977-432a-9f89-c3dd83fa885f'
-const MATCH_COUNT = 20
+const API_KEY = 'RGAPI-3da4be33-94da-48e1-86e5-82e56c6e3bcf'
+const MATCH_COUNT = 15
 
 async function getSummonerData(summoner) {
     const SUMMONER_URL = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}?api_key=${API_KEY}`
@@ -22,6 +22,13 @@ async function getMatchDataList(summonerPuuid) {
     
     const matchList = await Promise.all(matchPromisesList)
     return matchList
+}
+
+async function getRankedInfo(encrypedId) {
+    let RANKED_INFO_URL = `https://la2.api.riotgames.com/lol/league/v4/entries/by-summoner/${encrypedId}?api_key=${API_KEY}`
+    let responseRankedInfo = await fetch(RANKED_INFO_URL)
+    let rankedInfo = await responseRankedInfo.json()
+    return rankedInfo
 }
 
 function matchBox (matchArr) {
@@ -67,8 +74,58 @@ function matchBox (matchArr) {
         </div>
     </div>
     `
-    
 }
+
+function profileContainerGen(summonerData, rankedData, lastPlayedChampName) {
+    let nickname = rankedData[0].summonerName
+    let profileIconId = summonerData.profileIconId
+    let summonerLevel = summonerData.summonerLevel
+    let tier = rankedData[0].tier
+    let rank = rankedData[0].rank
+    let totalWins = rankedData[0].wins
+    let totalLosses = rankedData[0].losses
+    let leaguePoints = rankedData[0].leaguePoints
+    let rankStr;
+    switch (rank) {
+        case 'I':
+            rankStr = 1;
+            break;
+        case 'II':
+            rankStr = 2;
+            break;
+        case 'III':
+            rankStr = 3;
+            break;
+        case 'IV':
+            rankStr = 4;  
+            break;
+    }
+
+
+    return `
+    <div class="profile-champion-cover" style="background-image: url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${lastPlayedChampName}_0.jpg);"></div>
+    <div class="profile-container-info">
+        
+        <div class="profile-logo-summoner">
+
+            <div class="profile-icon-container"><div class="profile-icon" style="background-image: url(http://ddragon.leagueoflegends.com/cdn/10.18.1/img/profileicon/${profileIconId}.png);"></div></div>
+            
+            <div class="profile-summoner-nickname">
+                <span class="nickname">${nickname}</span>
+                <span class="level">Lvl ${summonerLevel}</span>
+            </div>
+        </div>
+        <div class="profile-container-elo">
+            <div class="elo-img"><div class="img" style="background-image: url(https://opgg-static.akamaized.net/images/medals/${tier.toLowerCase()}_${rankStr}.png);"></div></div>
+            <div class="elo-text-container">
+                <span class="elo-text">${tier} ${rank}</span>
+                <span class="elo-games">${leaguePoints} LP / ${totalWins}W ${totalLosses}L</span>
+            </div>
+        </div>
+    </div>
+    `
+}
+
 
 function MatchCard(MatchDataList, playerID) {
     let MatchCardArr = MatchDataList.map((match) => {
@@ -98,6 +155,12 @@ function MatchCard(MatchDataList, playerID) {
         return MatchInfoObj
     })
     return MatchCardArr
+}
+
+function getLastPlayedChamp(MatchDataList, playerID) {
+    let lastPlayedGame = MatchDataList[0]
+    let idPosition = lastPlayedGame.metadata.participants.indexOf(playerID, 0)
+    return lastPlayedGame.info.participants[idPosition].championName    
 }
 
 function averageKdaCalc(MatchCardsList) {
@@ -165,6 +228,7 @@ const button = document.getElementById('summoner-button')
 const summonerNameInput = document.getElementById('summoner-input')
 const matchesContainer = document.getElementById('match-container')
 const recentMatchesContainer = document.getElementById('recent-matches-container')
+const profileContainer = document.getElementById('profile-container')
 let summonerData;
 
 
@@ -174,11 +238,10 @@ button.onclick = function () {
     getSummonerData(summonerName).then((summonerPromise) => {
         summonerData = summonerPromise
         summonerPuuid = summonerData.puuid
+        summonerEncryptedId = summonerData.id
         
         getMatchDataList(summonerPuuid).then((MatchDataList) => {
             let MatchCardsList = MatchCard(MatchDataList, summonerPuuid)
-            
-            console.log(MatchDataList);
 
             recentMatchesContainer.innerHTML = recentMatchContainerBox(MatchCardsList)
 
@@ -189,7 +252,15 @@ button.onclick = function () {
             ${matchContainerList.join("")}
             `
 
+            let lastPlayedChampName = getLastPlayedChamp(MatchDataList, summonerPuuid)
+            
+            getRankedInfo(summonerEncryptedId).then((rankedData) => {
+    
+                let profileContainerHtml = profileContainerGen(summonerData, rankedData, lastPlayedChampName)
+                profileContainer.innerHTML = profileContainerHtml
+            })
         })
+
     
     })
     
