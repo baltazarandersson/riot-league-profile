@@ -5,6 +5,7 @@
     --dark-sections: hsl(225, 14%, 11%);
     --dark-elements: hsl(220deg 10% 17%);
     --font-color: hsl(223deg 11% 88%);
+    --font-dimmed: hsl(222deg 5% 52%);
 }
 
 /* width */
@@ -40,6 +41,7 @@ body {
     background-color: var(--dark-background);
     box-sizing: border-box;
     min-height: 100vh;
+    transition: all 0.5;
 }
 header{
     width: 100%;
@@ -123,22 +125,61 @@ header{
     box-sizing: border-box;
     align-items: center;
 }
-.average-kda {
+.last-matches {
     width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
 }
-.average-kda span {
+.last-matches span {
     font-size: 0.9rem;
-    color: hsl(222deg 5% 52%);
+    color: var(--font-dimmed);
     font-weight: 500;
+    text-shadow: none;
 }
-.average-kda div {
+.last-matches div {
     color: hsl(32, 55%, 65%);
     text-shadow: 0px 2px 2px var(--dark-background);
 }
+.last-matches-total {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    align-items: center;
+}
+.last-matches-total-txt {
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    justify-content: flex-start;
+    text-align: center;
+    text-shadow: 0px 2px 2px var(--dark-background);
+}
+.last-matches-total-bar {
+    width: 100%;
+    height: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+.last-matches-total-bar div {
+    height: 100%;
+}
+.bar-wins {
+    background-color: hsl(178, 69%, 52%);
+}
+.bar-remakes {
+    background-color: var(--font-dimmed);
+}
+.bar-losses {
+    background-color: hsl(0, 100%, 67%);
+}
+
+
 .all-match-info-container {
     width: 40rem;
     flex-direction: column;
@@ -182,6 +223,20 @@ header{
 }
 .result-info .result-info-kda {
     font-size: 0.9rem;
+}
+.game-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.game-result span {
+    font-size: 0.9rem;
+    color: var(--font-dimmed);
+    font-weight: 500;
+}
+.match-remake .game-result {
+    color: var(--font-dimmed);
 }
 .match-won .game-result{
     color: hsl(178, 69%, 52%);
