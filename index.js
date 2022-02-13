@@ -1,4 +1,4 @@
-const API_KEY = 'RGAPI-16fa74ca-c565-4842-b428-fc7e6a1913e3'
+const API_KEY = 'RGAPI-8ba30b91-c977-432a-9f89-c3dd83fa885f'
 
 async function getSummonerData(summoner) {
     const SUMMONER_URL = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}?api_key=${API_KEY}`
@@ -26,11 +26,12 @@ async function getMatchDataList(summonerPuuid) {
 function matchBox (matchArr) {
     let classType;
     let matchResult;
-    let personalKills = matchArr['kills']
-    let personalDeaths = matchArr['deaths']
-    let personalAssists = matchArr['assists']
-    let personalKDA;
-    personalDeaths === 0 ? personalKDA = personalKills + personalAssists : personalKDA = (personalKills + personalAssists) / personalDeaths
+    let kills = matchArr['kills']
+    let deaths = matchArr['deaths']
+    let assists = matchArr['assists']
+    let championName = matchArr['championName']
+    let kda;
+    deaths === 0 ? kda = kills + assists : kda = (kills + assists) / deaths
     if (matchArr['win']) {
         classType = 'match-won'
         matchResult = 'Victory'
@@ -40,19 +41,20 @@ function matchBox (matchArr) {
     }
     return `
     <div class="${classType} match-card">
-    <div class="champion-info">
-        <div class="champion-info-img"></div>
-        <div class="game-result">${matchResult}</div>
-    </div>
+        <div class="champion-info">
+            <div class="champion-info-img" style="background-image: url(http://ddragon.leagueoflegends.com/cdn/12.3.1/img/champion/${championName}.png"></div>
+            <div class="game-result">${matchResult}</div>
+        </div>
 
-    <div class="result-info">
-        <div class="result-info-score">${personalKills} / ${personalDeaths} / ${personalAssists}</div>
-        <div class="result-info-kda">${Math.round(personalKDA * 10) / 10} KDA</div>
-    </div>
+        <div class="result-info">
+            <div class="result-info-score">${kills} / ${deaths} / ${assists}</div>
+            <div class="result-info-kda">${Math.round(kda * 10) / 10} KDA</div>
+        </div>
     </div>
     `
     
 }
+
 function MatchCard(MatchDataList, playerID) {
     let MatchCardArr = MatchDataList.map((match) => {
         let MatchInfoObj = {}
@@ -69,15 +71,40 @@ function MatchCard(MatchDataList, playerID) {
         MatchInfoObj.kills = match.info.participants[idPosition]['kills']
         MatchInfoObj.deaths = match.info.participants[idPosition]['deaths']
         MatchInfoObj.assists = match.info.participants[idPosition]['assists']
+        MatchInfoObj.championName = match.info.participants[idPosition]['championName']
 
         return MatchInfoObj
     })
     return MatchCardArr
 }
 
+function averageKdaCalc(MatchCardsList) {
+    const kdaArr = MatchCardsList.map((matchArr) => {
+        if (matchArr.deaths === 0) {
+            return (matchArr.kills + matchArr.assists)
+        } else {
+            return (matchArr.kills + matchArr.assists) / matchArr.deaths
+        }
+    })
+    const kdaSum = kdaArr.reduce((previousVal, currentVal) => {
+        return previousVal + currentVal
+    })
+    return (kdaSum / kdaArr.length)
+}
+
+function recentMatchContainerBox(MatchCardsList) {
+    let averageKda = (Math.round(averageKdaCalc(MatchCardsList) * 10) / 10)
+    return `<div class="average-kda">
+                <span>Last 10 matches</span>
+                <div>${averageKda} KDA</div>
+            </div>
+            <div class="average-kda-champions"></div>`
+}
+
 const button = document.getElementById('summoner-button')
 const summonerNameInput = document.getElementById('summoner-input')
 const matchesContainer = document.getElementById('match-container')
+const recentMatchesContainer = document.getElementById('recent-matches-container')
 let summonerData;
 
 
@@ -91,51 +118,18 @@ button.onclick = function () {
         getMatchDataList(summonerPuuid).then((MatchDataList) => {
             let MatchCardsList = MatchCard(MatchDataList, summonerPuuid)
 
+            recentMatchesContainer.innerHTML = recentMatchContainerBox(MatchCardsList)
+
             const matchContainerList = MatchCardsList.map((matchArr) => {
                 return matchBox(matchArr)
             })
             matchesContainer.innerHTML = `
             ${matchContainerList.join("")}
             `
+
         })
     
     })
     
     
 }
-
-// function matchBox (result) {
-//     let classType;
-//     let InnerText;
-//     if (result) {
-//         classType = 'won'
-//         InnerText = 'Victory'
-//     } else {
-//         classType = 'lost'
-//         InnerText = 'Defeat'
-//     }
-//     return `<div class="${classType}">${InnerText}</div>`
-
-// button.onclick = function () {
-//     let summonerName = summonerNameInput.value
-
-//     getSummonerData(summonerName).then((summonerPromise) => {
-//         summonerData = summonerPromise
-//         summonerPuuid = summonerData.puuid
-        
-//         getMatchDataList(summonerPuuid).then((MatchDataList) => {
-            
-//             winList = winList(MatchDataList, summonerPuuid)
-
-//             const matchContainerList = winList.map((win) => {
-//                 return matchBox(win)
-//             })
-//             matchesContainer.innerHTML = `
-//             ${matchContainerList.join("")}
-//             `
-//         })
-    
-//     })
-    
-    
-// }

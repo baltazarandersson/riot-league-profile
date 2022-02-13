@@ -1,4 +1,4 @@
-@import url('http://fonts.cdnfonts.com/css/roboto');
+@import url('http://fonts.cdnfonts.com/css/inter');
 
 :root {
     --dark-background: hsl(223deg 20% 7%);
@@ -7,13 +7,35 @@
     --font-color: hsl(223deg 11% 88%);
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 1rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--dark-sections);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--dark-elements);
+    border-radius: 1rem 0rem 0rem 1rem;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(220deg 9% 20%);
+  }
+
 body, input, textarea, button {
     font-family: arial;
     color: var(--font-color);
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
     margin: 0rem;
     background-color: var(--dark-background);
     box-sizing: border-box;
@@ -45,7 +67,6 @@ header{
     border-radius: 0.5rem;
     padding: 0 1rem;
     width: 10rem;
-    font-weight: bold;
     transition: all 0.3s;
     outline: none;
 }
@@ -61,7 +82,6 @@ header{
     background-color: var(--dark-elements);
     border-radius: 0.5rem;
     padding: 0 1rem;
-    font-weight: bold;
     transition: all 0.3s;
 }
 .header-summoner-box button:hover{
@@ -90,7 +110,7 @@ header{
     display: flex;
     flex-direction: column;
 }
-.recent-matches-container {
+#recent-matches-container {
     border-radius: 0.5rem;
     display: flex;
     flex-direction: row;
@@ -108,6 +128,15 @@ header{
     justify-content: center;
     padding-left: 4rem;
 }
+.average-kda span {
+    font-size: 0.9rem;
+    color: hsl(222deg 5% 52%);
+    font-weight: 500;
+}
+.average-kda div {
+    color: hsl(32, 55%, 65%);
+    text-shadow: 0px 2px 2px var(--dark-background);
+}
 .all-match-info-container {
     width: 40rem;
     flex-direction: column;
@@ -117,8 +146,7 @@ header{
     border-bottom: 1px solid var(--dark-background);
     width: auto;
     text-align: center;
-    height: 4rem;
-    font-weight: bold;
+    height: 5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -130,6 +158,17 @@ header{
     align-items: center;
     text-shadow: 0px 2px 2px var(--dark-background);
     height: 100%;
+}
+.champion-info{
+    justify-content: flex-start;
+    gap: 2rem;
+}
+.champion-info-img {
+    min-width: 3rem;
+    min-height: 3rem;
+    background-size: 115%;
+    background-position: center;
+    border-radius: 0.2rem;
 }
 .match-card .result-info {
     color: hsl(32, 55%, 65%);
