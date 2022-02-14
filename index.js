@@ -255,9 +255,12 @@ button.onclick = function () {
             let lastPlayedChampName = getLastPlayedChamp(MatchDataList, summonerPuuid)
             
             getRankedInfo(summonerEncryptedId).then((rankedData) => {
-    
-                let profileContainerHtml = profileContainerGen(summonerData, rankedData, lastPlayedChampName)
-                profileContainer.innerHTML = profileContainerHtml
+                if (rankedData.length === 1) {
+                    let profileContainerHtml = profileContainerGen(summonerData, rankedData, lastPlayedChampName)
+                    profileContainer.innerHTML = profileContainerHtml
+                } else {
+                    profileContainer.innerHTML = `<div style="color: hsl(0, 100%, 67%); padding-top: 3rem;">err: not a ranked player</div>`
+                }
             })
         })
 
