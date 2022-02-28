@@ -1,4 +1,4 @@
-const API_KEY = 'RGAPI-3da4be33-94da-48e1-86e5-82e56c6e3bcf'
+const API_KEY = 'RGAPI-f249e19c-787b-4c77-9900-f0cde0f3ee0c'
 const MATCH_COUNT = 15
 
 async function getSummonerData(summoner) {
