@@ -4,6 +4,7 @@
 
 #### How to fetch APIs
 #### How promises work
+#### How to work with async, await
 #### How to manage a JSON response
 #### How to organize recieved data
 
